@@ -1,612 +1,764 @@
+
 <!doctype html>
 <html lang="id">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Kos Finance</title>
-    <style>
-      * {
-        box-sizing: border-box;
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Kos Finance</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: #f4f6fb;
+      color: #172033;
+      font-family: Arial, sans-serif;
+    }
+
+    header {
+      background: #14213d;
+      color: white;
+      padding: 25px 18px;
+    }
+
+    .wrap, main {
+      max-width: 900px;
+      margin: auto;
+    }
+
+    .brand {
+      font-size: 12px;
+      letter-spacing: 2px;
+      color: #b9c8e6;
+    }
+
+    h1 {
+      margin: 8px 0;
+    }
+
+    .clock {
+      font-size: 14px;
+      color: #d9e3f5;
+    }
+
+    main {
+      padding: 12px;
+    }
+
+    .panel {
+      background: white;
+      border-radius: 17px;
+      padding: 18px;
+      margin: 12px 0;
+      box-shadow: 0 4px 20px #1720330b;
+    }
+
+    h2 {
+      font-size: 18px;
+      margin: 0 0 15px;
+    }
+
+    .choices, .grid, .stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .stats {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    button {
+      cursor: pointer;
+      border: 0;
+      border-radius: 10px;
+      padding: 12px;
+      font-weight: bold;
+    }
+
+    .choice {
+      background: white;
+      border: 1px solid #ddd;
+      text-align: left;
+      padding: 18px;
+    }
+
+    .choice strong {
+      display: block;
+      margin: 8px 0;
+    }
+
+    .choice span {
+      font-size: 12px;
+      color: #64748b;
+    }
+
+    .active.income {
+      border: 2px solid #16a36a;
+      background: #f0fbf5;
+    }
+
+    .active.expense {
+      border: 2px solid #dc514b;
+      background: #fff5f4;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: bold;
+      margin-bottom: 6px;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #dce2ec;
+      border-radius: 9px;
+      font-size: 14px;
+    }
+
+    .field {
+      margin-bottom: 12px;
+    }
+
+    .primary {
+      background: #1d4ed8;
+      color: white;
+      width: 100%;
+      margin-top: 8px;
+    }
+
+    .stat {
+      background: #f5f7fb;
+      padding: 13px;
+      border-radius: 10px;
+    }
+
+    .stat small {
+      color: #64748b;
+      font-size: 11px;
+    }
+
+    .stat b {
+      display: block;
+      margin-top: 6px;
+      font-size: 16px;
+      overflow-wrap: anywhere;
+    }
+
+    .green {
+      color: #07834e;
+    }
+
+    .red {
+      color: #c43d39;
+    }
+
+    .muted {
+      font-size: 13px;
+      color: #64748b;
+    }
+
+    .entry {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    .entry small {
+      display: block;
+      color: #64748b;
+      margin-top: 4px;
+    }
+
+    .amount {
+      font-weight: bold;
+      white-space: nowrap;
+    }
+
+    .delete {
+      background: #fff0ef;
+      color: #b93832;
+      padding: 8px;
+    }
+
+    .secondary {
+      background: #edf2fa;
+      color: #24334d;
+    }
+
+    .progress {
+      height: 9px;
+      background: #e8edf5;
+      border-radius: 20px;
+      overflow: hidden;
+      margin: 10px 0;
+    }
+
+    .bar {
+      height: 100%;
+      background: #16a36a;
+      width: 0;
+    }
+
+    .foot {
+      font-size: 12px;
+      color: #64748b;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 560px) {
+      .grid, .choices, .stats {
+        grid-template-columns: 1fr;
       }
-      body {
-        margin: 0;
-        background: #f4f6fb;
-        color: #172033;
-        font-family: Arial, sans-serif;
-      }
-      header {
-        background: #14213d;
-        color: white;
-        padding: 25px 18px;
-      }
-      .wrap,
-      main {
-        max-width: 900px;
-        margin: auto;
-      }
-      .brand {
-        font-size: 12px;
-        letter-spacing: 2px;
-        color: #b9c8e6;
-      }
-      h1 {
-        margin: 8px 0;
-      }
-      .clock {
-        font-size: 14px;
-        color: #d9e3f5;
-      }
-      main {
-        padding: 12px;
-      }
-      .panel {
-        background: white;
-        border-radius: 17px;
-        padding: 18px;
-        margin: 12px 0;
-        box-shadow: 0 4px 20px #1720330b;
-      }
-      h2 {
-        font-size: 18px;
-        margin: 0 0 15px;
-      }
-      .choices,
-      .grid,
-      .stats {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 12px;
-      }
-      .stats {
-        grid-template-columns: repeat(3, 1fr);
-      }
-      button {
-        cursor: pointer;
-        border: 0;
-        border-radius: 10px;
-        padding: 12px;
-        font-weight: bold;
-      }
-      .choice {
-        background: white;
-        border: 1px solid #ddd;
-        text-align: left;
-        padding: 18px;
-      }
-      .choice strong {
-        display: block;
-        margin: 8px 0;
-      }
-      .choice span {
-        font-size: 12px;
-        color: #64748b;
-      }
-      .active.income {
-        border: 2px solid #16a36a;
-        background: #f0fbf5;
-      }
-      .active.expense {
-        border: 2px solid #dc514b;
-        background: #fff5f4;
-      }
-      label {
-        display: block;
-        font-size: 13px;
-        font-weight: bold;
-        margin-bottom: 6px;
-      }
-      input,
-      select {
-        width: 100%;
-        padding: 12px;
-        border: 1px solid #dce2ec;
-        border-radius: 9px;
-        font-size: 14px;
-      }
-      .field {
-        margin-bottom: 12px;
-      }
-      .primary {
-        background: #1d4ed8;
-        color: white;
-        width: 100%;
-        margin-top: 8px;
-      }
-      .stat {
-        background: #f5f7fb;
-        padding: 13px;
-        border-radius: 10px;
-      }
-      .stat small {
-        color: #64748b;
-        font-size: 11px;
-      }
-      .stat b {
-        display: block;
-        margin-top: 6px;
-        font-size: 16px;
-        overflow-wrap: anywhere;
-      }
-      .green {
-        color: #07834e;
-      }
-      .red {
-        color: #c43d39;
-      }
-      .muted {
-        font-size: 13px;
-        color: #64748b;
-      }
-      .entry {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 10px;
-        padding: 12px 0;
-        border-bottom: 1px solid #eee;
-      }
-      .entry small {
-        display: block;
-        color: #64748b;
-        margin-top: 4px;
-      }
-      .amount {
-        font-weight: bold;
-        white-space: nowrap;
-      }
-      .delete {
-        background: #fff0ef;
-        color: #b93832;
-        padding: 8px;
-      }
-      .secondary {
-        background: #edf2fa;
-        color: #24334d;
-      }
-      .progress {
-        height: 9px;
-        background: #e8edf5;
-        border-radius: 20px;
-        overflow: hidden;
-        margin: 10px 0;
-      }
-      .bar {
-        height: 100%;
-        background: #16a36a;
-        width: 0;
-      }
-      .foot {
-        font-size: 12px;
-        color: #64748b;
-        line-height: 1.6;
-      }
-      @media (max-width: 560px) {
-        .grid,
-        .choices,
-        .stats {
-          grid-template-columns: 1fr;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <header>
-      <div class="wrap">
-        <div class="brand">PERSONAL MONEY MANAGEMENT</div>
-        <h1>🏠 KOS FINANCE</h1>
-        <div id="clock" class="clock"></div>
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="wrap">
+      <div class="brand">PERSONAL MONEY MANAGEMENT</div>
+      <h1>🏠 KOS FINANCE</h1>
+      <div id="clock" class="clock"></div>
+    </div>
+  </header>
+
+  <main>
+    <section class="panel">
+      <h2>Mau mencatat apa hari ini?</h2>
+
+      <div class="choices">
+        <button
+          class="choice active income"
+          id="incomeChoice"
+          onclick="setType('income')"
+        >
+          💰 <strong>PEMASUKAN</strong>
+          <span>Uang saku</span>
+        </button>
+
+        <button
+          class="choice expense"
+          id="expenseChoice"
+          onclick="setType('expense')"
+        >
+          🧾 <strong>PENGELUARAN</strong>
+          <span>Makan, bensin, laundry, dan lainnya</span>
+        </button>
       </div>
-    </header>
+    </section>
 
-    <main>
-      <section class="panel">
-        <h2>Mau mencatat apa hari ini?</h2>
-        <div class="choices">
-          <button
-            class="choice active income"
-            id="incomeChoice"
-            onclick="setType('income')"
-          >
-            💰 <strong>PEMASUKAN</strong>
-            <span>Uang saku</span>
-          </button>
-          <button
-            class="choice expense"
-            id="expenseChoice"
-            onclick="setType('expense')"
-          >
-            🧾 <strong>PENGELUARAN</strong>
-            <span>Makan, bensin, laundry, dan lainnya</span>
-          </button>
+    <section class="panel">
+      <h2>Pengaturan periode uang saku</h2>
+
+      <div class="grid">
+        <div class="field">
+          <label>Periode</label>
+          <select id="cycle" onchange="render()">
+            <option value="14">14 hari</option>
+            <option value="30">30 hari</option>
+          </select>
         </div>
-      </section>
 
-      <section class="panel">
-        <h2>Pengaturan periode uang saku</h2>
+        <div class="field">
+          <label>Tanggal mulai periode</label>
+          <input type="date" id="startDate" onchange="render()" />
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2 id="formTitle">Catat pemasukan</h2>
+
+      <form id="entryForm">
         <div class="grid">
           <div class="field">
-            <label>Periode</label>
-            <select id="cycle" onchange="render()">
-              <option value="14">14 hari</option>
-              <option value="30">30 hari</option>
-            </select>
+            <label>Nominal (Rp)</label>
+            <input
+              id="amount"
+              type="text"
+              inputmode="numeric"
+              placeholder="Contoh: 1.500.000"
+              autocomplete="off"
+              required
+            />
           </div>
+
           <div class="field">
-            <label>Tanggal mulai periode</label>
-            <input type="date" id="startDate" onchange="render()" />
+            <label>Kategori</label>
+            <select id="category"></select>
+          </div>
+
+          <div class="field">
+            <label>Tanggal transaksi</label>
+            <input id="date" type="date" required />
+          </div>
+
+          <div class="field">
+            <label>Keterangan</label>
+            <input
+              id="note"
+              type="text"
+              placeholder="Keterangan transaksi"
+            />
           </div>
         </div>
-      </section>
 
-      <section class="panel">
-        <h2 id="formTitle">Catat pemasukan</h2>
-        <form id="entryForm">
-          <div class="grid">
-            <div class="field">
-              <label>Nominal (Rp)</label>
-              <input
-                id="amount"
-                type="number"
-                min="1"
-                required
-              />
-            </div>
-            <div class="field">
-              <label>Kategori</label>
-              <select id="category"></select>
-            </div>
-            <div class="field">
-              <label>Tanggal transaksi</label>
-              <input id="date" type="date" required />
-            </div>
-            <div class="field">
-              <label>Keterangan</label>
-              <input id="note" type="text" placeholder="Keterangan transaksi" />
-            </div>
-          </div>
-          <button class="primary" type="submit">＋ Simpan catatan</button>
-        </form>
-      </section>
+        <button class="primary" type="submit">
+          ＋ Simpan catatan
+        </button>
+      </form>
+    </section>
 
-      <section class="panel">
-        <h2>Rencana anggaran 14 hari</h2>
-        <p class="muted">
-          Uang saku Rp1.500.000. Biaya kos dibayar terpisah. Ini target awal
-          yang dapat disesuaikan.
-        </p>
-        <div id="budgetList"></div>
-      </section>
+    <section class="panel">
+      <h2>Rencana anggaran 14 hari</h2>
 
-      <section class="panel">
-        <h2>Ringkasan keuangan</h2>
-        <div class="stats">
-          <div class="stat">
-            <small>Total pemasukan</small>
-            <b class="green" id="totalIn">Rp0</b>
-          </div>
-          <div class="stat">
-            <small>Total pengeluaran</small>
-            <b class="red" id="totalOut">Rp0</b>
-          </div>
-          <div class="stat">
-            <small>Saldo keseluruhan</small>
-            <b id="balance">Rp0</b>
-          </div>
+      <p class="muted">
+        Uang saku Rp1.500.000. Biaya kos dibayar terpisah.
+        Ini target awal yang dapat disesuaikan.
+      </p>
+
+      <div id="budgetList"></div>
+    </section>
+
+    <section class="panel">
+      <h2>Ringkasan keuangan</h2>
+
+      <div class="stats">
+        <div class="stat">
+          <small>Total pemasukan</small>
+          <b class="green" id="totalIn">Rp0</b>
         </div>
-        <br />
-        <div style="display: flex; justify-content: space-between">
-          <b>Penggunaan uang periode ini</b>
-          <b id="spentPct">0%</b>
+
+        <div class="stat">
+          <small>Total pengeluaran</small>
+          <b class="red" id="totalOut">Rp0</b>
         </div>
-        <div class="progress">
-          <div class="bar" id="bar"></div>
+
+        <div class="stat">
+          <small>Saldo keseluruhan</small>
+          <b id="balance">Rp0</b>
         </div>
-        <div class="muted" id="periodLabel"></div>
-        <div class="muted" id="periodBalance"></div>
-      </section>
+      </div>
 
-      <section class="panel">
-        <div
-          style="
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 10px;
-          "
-        >
-          <h2>Riwayat transaksi</h2>
-          <button class="secondary" onclick="exportCSV()">Unduh CSV</button>
-        </div>
-        <div id="history" class="muted">Belum ada transaksi.</div>
-      </section>
+      <br />
 
-      <section class="panel foot">
-        <b>Informasi penyimpanan</b><br />
-        Data disimpan di localStorage browser pada perangkat ini. Ekspor CSV
-        secara berkala untuk cadangan. Data tidak otomatis tersinkronisasi ke
-        perangkat lain.
-      </section>
-    </main>
+      <div style="display:flex;justify-content:space-between">
+        <b>Penggunaan uang periode ini</b>
+        <b id="spentPct">0%</b>
+      </div>
 
-    <script>
-      const incomeCats = [
-        "Uang saku"
-      ];
+      <div class="progress">
+        <div class="bar" id="bar"></div>
+      </div>
 
-      const expenseCats = [
-        "Makan",
-        "Laundry",
-        "Bensin",
-        "Ngopi & jajan",
-        "Jalan dengan teman / hiburan",
-        "Servis motor & oli",
-        "Peralatan mandi / sabun",
-        "Paket data / pulsa",
-        "Listrik / air / galon",
-        "Pakaian / kebutuhan pribadi",
-        "Keperluan kos",
-        "Keluarga / sosial",
-        "Tabungan",
-        "Pengeluaran lainnya",
-      ];
+      <div class="muted" id="periodLabel"></div>
+      <div class="muted" id="periodBalance"></div>
+    </section>
 
-      const budget = [
-        ["Makan", 630000],
-        ["Laundry", 60000],
-        ["Bensin", 100000],
-        ["Paket data / pulsa", 50000],
-        ["Ngopi & jajan", 150000],
-        ["Peralatan mandi / sabun", 50000],
-        ["Servis motor & oli", 50000],
-        ["Tabungan", 200000],
-        ["Keperluan lain", 100000],
-        ["Dana penyangga", 100000],
-      ];
+    <section class="panel">
+      <div
+        style="
+          display:flex;
+          justify-content:space-between;
+          align-items:center;
+          gap:10px;
+        "
+      >
+        <h2>Riwayat transaksi</h2>
+        <button class="secondary" onclick="exportCSV()">
+          Unduh CSV
+        </button>
+      </div>
 
-      let type = "income";
-      let entries = [];
+      <div id="history" class="muted">
+        Belum ada transaksi.
+      </div>
+    </section>
 
-      try {
-        entries = JSON.parse(localStorage.getItem("kosFinanceEntries") || "[]");
-      } catch (e) {
-        entries = [];
-      }
+    <section class="panel foot">
+      <b>Informasi penyimpanan</b><br />
+      Data disimpan di localStorage browser pada perangkat ini.
+      Ekspor CSV secara berkala untuk cadangan.
+      Data tidak otomatis tersinkronisasi ke perangkat lain.
+    </section>
+  </main>
 
-      const $ = (id) => document.getElementById(id);
+  <script>
+    const incomeCats = [
+      "Uang saku"
+    ];
 
-      function today() {
-        const d = new Date();
-        return [
-          d.getFullYear(),
-          String(d.getMonth() + 1).padStart(2, "0"),
-          String(d.getDate()).padStart(2, "0"),
-        ].join("-");
-      }
+    const expenseCats = [
+      "Makan",
+      "Laundry",
+      "Bensin",
+      "Ngopi & jajan",
+      "Jalan dengan teman / hiburan",
+      "Servis motor & oli",
+      "Peralatan mandi / sabun",
+      "Paket data / pulsa",
+      "Listrik / air / galon",
+      "Pakaian / kebutuhan pribadi",
+      "Keperluan kos",
+      "Keluarga / sosial",
+      "Tabungan",
+      "Pengeluaran lainnya"
+    ];
 
-      function rupiah(n) {
-        return new Intl.NumberFormat("id-ID", {
-          style: "currency",
-          currency: "IDR",
-          maximumFractionDigits: 0,
-        }).format(n || 0);
-      }
+    const budget = [
+      ["Makan", 630000],
+      ["Laundry", 60000],
+      ["Bensin", 100000],
+      ["Paket data / pulsa", 50000],
+      ["Ngopi & jajan", 150000],
+      ["Peralatan mandi / sabun", 50000],
+      ["Servis motor & oli", 50000],
+      ["Tabungan", 200000],
+      ["Keperluan lain", 100000],
+      ["Dana penyangga", 100000]
+    ];
 
-      function updateClock() {
-        $("clock").textContent = new Intl.DateTimeFormat("id-ID", {
-          weekday: "long",
-          day: "numeric",
-          month: "long",
-          year: "numeric",
-          hour: "2-digit",
-          minute: "2-digit",
-          second: "2-digit",
-          timeZone: "Asia/Jakarta",
-          timeZoneName: "short",
-        }).format(new Date());
-      }
+    let type = "income";
+    let entries = [];
 
-      function setType(t) {
-        type = t;
+    try {
+      entries = JSON.parse(
+        localStorage.getItem("kosFinanceEntries") || "[]"
+      );
+    } catch (e) {
+      entries = [];
+    }
 
-        $("incomeChoice").classList.toggle("active", t === "income");
-        $("expenseChoice").classList.toggle("active", t === "expense");
+    const $ = (id) => document.getElementById(id);
 
-        $("formTitle").textContent =
-          t === "income" ? "Catat pemasukan" : "Catat pengeluaran";
+    // Mengambil tanggal hari ini
+    function today() {
+      const d = new Date();
 
-        $("category").innerHTML = (t === "income" ? incomeCats : expenseCats)
-          .map((c) => `<option>${c}</option>`)
-          .join("");
-      }
+      return [
+        d.getFullYear(),
+        String(d.getMonth() + 1).padStart(2, "0"),
+        String(d.getDate()).padStart(2, "0")
+      ].join("-");
+    }
 
-      function save() {
-        localStorage.setItem("kosFinanceEntries", JSON.stringify(entries));
-      }
+    // Format angka menjadi Rupiah
+    function rupiah(n) {
+      return new Intl.NumberFormat("id-ID", {
+        style: "currency",
+        currency: "IDR",
+        maximumFractionDigits: 0
+      }).format(n || 0);
+    }
 
-      function renderBudget() {
-        $("budgetList").innerHTML = budget
-          .map(
-            (item) => `
-  <div class="entry">
-   <b>${item[0]}</b>
-   <span class="amount">${rupiah(item[1])}</span>
-  </div>
- `,
-          )
-          .join("");
-      }
+    // Format nominal dengan titik setiap tiga digit
+    function formatNominal(value) {
+      const digits = String(value).replace(/\D/g, "");
 
-      function render() {
-        const totalIn = entries
-          .filter((e) => e.type === "income")
-          .reduce((s, e) => s + e.amount, 0);
+      if (!digits) return "";
 
-        const totalOut = entries
-          .filter((e) => e.type === "expense")
-          .reduce((s, e) => s + e.amount, 0);
+      return digits.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    }
 
-        $("totalIn").textContent = rupiah(totalIn);
-        $("totalOut").textContent = rupiah(totalOut);
-        $("balance").textContent = rupiah(totalIn - totalOut);
+    // Mengubah nominal bertitik menjadi angka biasa
+    function parseNominal(value) {
+      return Number(String(value).replace(/\D/g, ""));
+    }
 
-        const days = Number($("cycle").value);
-        const start = $("startDate").value || today();
+    // Otomatis memberi titik ketika pengguna mengetik
+    $("amount").addEventListener("input", function () {
+      const cursorPosition = this.selectionStart;
+      const oldLength = this.value.length;
 
-        const startD = new Date(start + "T00:00:00");
-        const endD = new Date(startD);
-        endD.setDate(endD.getDate() + days);
+      this.value = formatNominal(this.value);
 
-        const periodEntries = entries.filter((e) => {
-          const d = new Date(e.date + "T12:00:00");
-          return d >= startD && d < endD;
-        });
+      const newLength = this.value.length;
+      const newCursorPosition = Math.max(
+        0,
+        cursorPosition + (newLength - oldLength)
+      );
 
-        const pIn = periodEntries
-          .filter((e) => e.type === "income")
-          .reduce((s, e) => s + e.amount, 0);
+      this.setSelectionRange(
+        newCursorPosition,
+        newCursorPosition
+      );
+    });
 
-        const pOut = periodEntries
-          .filter((e) => e.type === "expense")
-          .reduce((s, e) => s + e.amount, 0);
+    // Jam dan tanggal real-time WIB
+    function updateClock() {
+      $("clock").textContent = new Intl.DateTimeFormat("id-ID", {
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        timeZone: "Asia/Jakarta",
+        timeZoneName: "short"
+      }).format(new Date());
+    }
 
-        const pct = pIn > 0 ? Math.min(100, Math.round((pOut / pIn) * 100)) : 0;
+    // Memilih jenis transaksi
+    function setType(t) {
+      type = t;
 
-        $("spentPct").textContent = pct + "%";
-        $("bar").style.width = pct + "%";
-        $("bar").style.background = pct > 90 ? "#dc514b" : "#16a36a";
+      $("incomeChoice").classList.toggle(
+        "active",
+        t === "income"
+      );
 
-        $("periodLabel").textContent =
-          start +
-          " sampai " +
-          new Date(endD - 86400000).toLocaleDateString("id-ID");
+      $("expenseChoice").classList.toggle(
+        "active",
+        t === "expense"
+      );
 
-        $("periodBalance").textContent = "Sisa periode: " + rupiah(pIn - pOut);
+      $("formTitle").textContent =
+        t === "income"
+          ? "Catat pemasukan"
+          : "Catat pengeluaran";
 
-        $("history").innerHTML = entries.length
-          ? entries
-              .slice()
-              .sort((a, b) => b.date.localeCompare(a.date))
-              .map(
-                (e) => `
-   <div class="entry">
-    <div>
-     <b>${escapeHtml(e.category)}</b>
-     <small>${escapeHtml(e.date)}
-     ${e.note ? " · " + escapeHtml(e.note) : ""}</small>
-    </div>
-    <div style="display:flex;align-items:center;gap:8px">
-     <span class="amount ${e.type === "income" ? "green" : "red"}">
-      ${e.type === "income" ? "+" : "−"}${rupiah(e.amount)}
-     </span>
-     <button class="delete"
-      onclick="removeEntry(${e.id})">Hapus</button>
-    </div>
-   </div>
-  `,
-              )
-              .join("")
-          : "Belum ada transaksi.";
-      }
+      $("category").innerHTML = (
+        t === "income" ? incomeCats : expenseCats
+      )
+        .map((c) => `<option>${c}</option>`)
+        .join("");
+    }
 
-      function escapeHtml(s) {
-        return String(s).replace(
-          /[&<>"']/g,
-          (c) =>
-            ({
-              "&": "&amp;",
-              "<": "&lt;",
-              ">": "&gt;",
-              '"': "&quot;",
-              "'": "&#39;",
-            })[c],
-        );
-      }
+    // Menyimpan data ke browser
+    function save() {
+      localStorage.setItem(
+        "kosFinanceEntries",
+        JSON.stringify(entries)
+      );
+    }
 
-      function removeEntry(id) {
-        if (confirm("Hapus transaksi ini?")) {
-          entries = entries.filter((e) => e.id !== id);
-          save();
-          render();
-        }
-      }
+    // Menampilkan anggaran
+    function renderBudget() {
+      $("budgetList").innerHTML = budget
+        .map((item) => `
+          <div class="entry">
+            <b>${item[0]}</b>
+            <span class="amount">${rupiah(item[1])}</span>
+          </div>
+        `)
+        .join("");
+    }
 
-      $("entryForm").addEventListener("submit", (e) => {
-        e.preventDefault();
+    // Memperbarui ringkasan dan riwayat transaksi
+    function render() {
+      const totalIn = entries
+        .filter((e) => e.type === "income")
+        .reduce((s, e) => s + e.amount, 0);
 
-        const amount = Number($("amount").value);
-        if (!amount || amount < 1) return;
+      const totalOut = entries
+        .filter((e) => e.type === "expense")
+        .reduce((s, e) => s + e.amount, 0);
 
-        entries.push({
-          id: Date.now(),
-          type,
-          amount,
-          category: $("category").value,
-          date: $("date").value,
-          note: $("note").value.trim(),
-        });
+      $("totalIn").textContent = rupiah(totalIn);
+      $("totalOut").textContent = rupiah(totalOut);
+      $("balance").textContent = rupiah(totalIn - totalOut);
 
-        save();
-        $("amount").value = "";
-        $("note").value = "";
-        render();
+      const days = Number($("cycle").value);
+      const start = $("startDate").value || today();
+
+      const startD = new Date(start + "T00:00:00");
+      const endD = new Date(startD);
+
+      endD.setDate(endD.getDate() + days);
+
+      const periodEntries = entries.filter((e) => {
+        const d = new Date(e.date + "T12:00:00");
+        return d >= startD && d < endD;
       });
 
-      function exportCSV() {
-        if (!entries.length) {
-          alert("Belum ada transaksi.");
-          return;
-        }
+      const pIn = periodEntries
+        .filter((e) => e.type === "income")
+        .reduce((s, e) => s + e.amount, 0);
 
-        const rows = [
-          ["Tanggal", "Jenis", "Kategori", "Nominal", "Keterangan"],
-          ...entries.map((e) => [
-            e.date,
-            e.type === "income" ? "Pemasukan" : "Pengeluaran",
-            e.category,
-            e.amount,
-            e.note,
-          ]),
-        ];
+      const pOut = periodEntries
+        .filter((e) => e.type === "expense")
+        .reduce((s, e) => s + e.amount, 0);
 
-        const csv = rows
-          .map((r) =>
-            r.map((v) => '"' + String(v).replace(/"/g, '""') + '"').join(","),
-          )
-          .join("\r\n");
+      const pct = pIn > 0
+        ? Math.min(100, Math.round((pOut / pIn) * 100))
+        : 0;
 
-        const a = document.createElement("a");
-        a.href = URL.createObjectURL(
-          new Blob(["\ufeff" + csv], {
-            type: "text/csv;charset=utf-8;",
-          }),
-        );
-        a.download = "kos-finance-" + today() + ".csv";
-        a.click();
-        URL.revokeObjectURL(a.href);
-      }
+      $("spentPct").textContent = pct + "%";
+      $("bar").style.width = pct + "%";
 
-      // Inisialisasi aplikasi
-      $("date").value = today();
-      $("startDate").value = today();
-      $("cycle").value = "14";
+      $("bar").style.background =
+        pct > 90 ? "#dc514b" : "#16a36a";
 
-      if (!localStorage.getItem("kosFinanceEntries")) {
-        entries.push({
-          id: Date.now(),
-          type: "income",
-          amount: 1500000,
-          category: "Uang saku",
-          date: today(),
-          note: "Saldo awal uang saku",
-        });
+      $("periodLabel").textContent =
+        start +
+        " sampai " +
+        new Date(endD - 86400000).toLocaleDateString("id-ID");
+
+      $("periodBalance").textContent =
+        "Sisa periode: " + rupiah(pIn - pOut);
+
+      // Riwayat transaksi
+      $("history").innerHTML = entries.length
+        ? entries
+            .slice()
+            .sort((a, b) => b.date.localeCompare(a.date))
+            .map((e) => `
+              <div class="entry">
+                <div>
+                  <b>${escapeHtml(e.category)}</b>
+                  <small>
+                    ${escapeHtml(e.date)}
+                    ${e.note ? " · " + escapeHtml(e.note) : ""}
+                  </small>
+                </div>
+
+                <div style="display:flex;align-items:center;gap:8px">
+                  <span class="amount ${
+                    e.type === "income" ? "green" : "red"
+                  }">
+                    ${e.type === "income" ? "+" : "−"}${rupiah(e.amount)}
+                  </span>
+
+                  <button
+                    class="delete"
+                    onclick="removeEntry(${e.id})"
+                  >
+                    Hapus
+                  </button>
+                </div>
+              </div>
+            `)
+            .join("")
+        : "Belum ada transaksi.";
+    }
+
+    // Mengamankan teks yang ditampilkan di riwayat
+    function escapeHtml(s) {
+      return String(s).replace(/[&<>"']/g, (c) =>
+        ({
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          '"': "&quot;",
+          "'": "&#39;"
+        })[c]
+      );
+    }
+
+    // Menghapus transaksi
+    function removeEntry(id) {
+      if (confirm("Hapus transaksi ini?")) {
+        entries = entries.filter((e) => e.id !== id);
         save();
+        render();
+      }
+    }
+
+    // Menyimpan transaksi baru
+    $("entryForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const amount = parseNominal($("amount").value);
+
+      if (!amount || amount < 1) {
+        alert("Masukkan nominal yang benar.");
+        $("amount").focus();
+        return;
       }
 
-      setType("income");
-      renderBudget();
+      entries.push({
+        id: Date.now(),
+        type,
+        amount,
+        category: $("category").value,
+        date: $("date").value,
+        note: $("note").value.trim()
+      });
+
+      save();
+
+      $("amount").value = "";
+      $("note").value = "";
+
       render();
-      updateClock();
-      setInterval(updateClock, 1000);
-    </script>
-  </body>
+    });
+
+    // Mengunduh riwayat dalam format CSV
+    function exportCSV() {
+      if (!entries.length) {
+        alert("Belum ada transaksi.");
+        return;
+      }
+
+      const rows = [
+        ["Tanggal", "Jenis", "Kategori", "Nominal", "Keterangan"],
+        ...entries.map((e) => [
+          e.date,
+          e.type === "income" ? "Pemasukan" : "Pengeluaran",
+          e.category,
+          e.amount,
+          e.note
+        ])
+      ];
+
+      const csv = rows
+        .map((r) =>
+          r
+            .map((v) => '"' + String(v).replace(/"/g, '""') + '"')
+            .join(",")
+        )
+        .join("\r\n");
+
+      const a = document.createElement("a");
+
+      a.href = URL.createObjectURL(
+        new Blob(["\ufeff" + csv], {
+          type: "text/csv;charset=utf-8;"
+        })
+      );
+
+      a.download = "kos-finance-" + today() + ".csv";
+      a.click();
+
+      URL.revokeObjectURL(a.href);
+    }
+
+    // Inisialisasi aplikasi
+    $("date").value = today();
+    $("startDate").value = today();
+    $("cycle").value = "14";
+
+    // Saldo awal hanya dibuat saat aplikasi pertama kali digunakan
+    if (!localStorage.getItem("kosFinanceEntries")) {
+      entries.push({
+        id: Date.now(),
+        type: "income",
+        amount: 1500000,
+        category: "Uang saku",
+        date: today(),
+        note: "Saldo awal uang saku"
+      });
+
+      save();
+    }
+
+    setType("income");
+    renderBudget();
+    render();
+    updateClock();
+
+    // Jam diperbarui setiap detik
+    setInterval(updateClock, 1000);
+  </script>
+</body>
 </html>
