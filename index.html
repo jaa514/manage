@@ -411,6 +411,7 @@
       "Keperluan kos",
       "Keluarga / sosial",
       "Tabungan",
+      "Futsal / olahraga",
       "Pengeluaran lainnya"
     ];
 
@@ -607,11 +608,11 @@
       $("periodBalance").textContent =
         "Sisa periode: " + rupiah(pIn - pOut);
 
-      // Riwayat transaksi
+      // Riwayat: transaksi terakhir diinput selalu paling atas
       $("history").innerHTML = entries.length
         ? entries
             .slice()
-            .sort((a, b) => b.date.localeCompare(a.date))
+            .sort((a, b) => b.id - a.id)
             .map((e) => `
               <div class="entry">
                 <div>
